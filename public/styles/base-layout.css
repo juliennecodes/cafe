@@ -1,0 +1,20 @@
+/*--------------------------------------------------------------
+Layout and Spacing
+--------------------------------------------------------------*/
+body {
+  padding: 24px;
+}
+.menuItem{
+  padding: 48px;
+}
+
+.cartItems{
+  padding-top: 24px;
+}
+
+.individualPrice{
+  text-align: right;
+}
+.orderSummary{
+  padding-top: 16px;
+}

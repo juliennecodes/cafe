@@ -1,0 +1,67 @@
+.menu{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+
+.menu nav{
+  grid-column: 1/4;
+}
+
+.menuItem{
+  display: flex;
+  flex-direction: column;
+}
+
+.menuItem img{
+  justify-self:center;
+  align-self: center;
+}
+
+.menu nav ul{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.cart {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cart nav{
+  grid-column: 1/4;
+}
+
+.cart nav ul{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.cartItems{
+  grid-column: 1/4;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartItem {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.quantity{
+  display: flex;
+  height: 24px;
+}
+
+.quantity input{
+  width: 36px;
+}
+
+.subTotal, .tax, .total {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+}
+
+.cost {
+  text-align: right;
+}
