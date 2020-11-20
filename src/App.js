@@ -4,23 +4,13 @@ import {Menu}from './Menu';
 import {Cart} from './Cart';
 import {OrderSummary} from './OrderSummary';
 
-const initialItems = menuItems.map(
-  item => {
-    return {key: item.name, ...item}
-  }
-);
-
-// const initialItems = fetch('/menu', {method: 'GET', headers: {'Content-Type': 'application/json'}})
-// .then(res => res.json());
+const initialItems = menuItems.map(item => {return {key: item.name, ...item}});
 
 function App() {
   const [cart, setCart] = useState(initialItems);
   const [subTotal, setSubTotal] = useState(0);
 
   const updateCart = (itemName, newQty) => {
-    console.log(`item name is ${itemName}`); //why is this not console logging?
-    console.log(`newQty is ${newQty}`);
-
     fetch(
       '/menu',
       {
@@ -33,17 +23,6 @@ function App() {
     .then(updatedCart => setCart(updatedCart));
   }
 
-
-  // const individualSubtotals = cart.map(
-  //   item => {
-  //     return item.price * item.quantity;
-  //   }
-  // );
-
-  // const subTotal = individualSubtotals.reduce(
-  //   (newTotal, individualSubtotal) => newTotal + individualSubtotal, 0
-  // );
-
   useEffect(()=>{
       fetch('/subTotal',
         {
@@ -53,7 +32,6 @@ function App() {
       .then(res => res.json())
       .then(updatedSubTotal => setSubTotal(updatedSubTotal));
     }, [cart]);
-
 
   return(
     <>
