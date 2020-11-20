@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-// import './App.css';
+import React, {useState, useEffect} from 'react';
 import {menuItems} from './menuItems';
 import {Menu}from './Menu';
 import {Cart} from './Cart';
@@ -16,6 +15,7 @@ const initialItems = menuItems.map(
 
 function App() {
   const [cart, setCart] = useState(initialItems);
+  const [subTotal, setSubTotal] = useState(0);
 
   const updateCart = (itemName, newQty) => {
     console.log(`item name is ${itemName}`); //why is this not console logging?
@@ -34,15 +34,25 @@ function App() {
   }
 
 
-  const individualSubtotals = cart.map(
-    item => {
-      return item.price * item.quantity;
-    }
-  );
+  // const individualSubtotals = cart.map(
+  //   item => {
+  //     return item.price * item.quantity;
+  //   }
+  // );
 
-  const subTotal = individualSubtotals.reduce(
-    (newTotal, individualSubtotal) => newTotal + individualSubtotal, 0
-  );
+  // const subTotal = individualSubtotals.reduce(
+  //   (newTotal, individualSubtotal) => newTotal + individualSubtotal, 0
+  // );
+
+  useEffect(()=>{
+      fetch('/subTotal',
+        {
+          method: 'GET',
+          headers: {'Content-Type': 'application/json'}
+        })
+      .then(res => res.json())
+      .then(updatedSubTotal => setSubTotal(updatedSubTotal));
+    }, [cart]);
 
 
   return(

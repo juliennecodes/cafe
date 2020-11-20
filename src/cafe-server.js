@@ -35,12 +35,14 @@ let cart =  menuItems;
 //------------------------------------------------------------------------------
 // let subtotal = menuItems.reduce((accumulatedMenuItem, newMenuItem) => accumulatedMenuItem.price + (newMenuItem.price * newMenuItem.quantity), 0);
 //------------------------------------------------------------------------------
-const reducer = (accumulator, currentValue) => accumulator + (currentValue.price * currentValue.quantity);
-let subtotal = cart.reduce(reducer, 0);
+// const reducer = (accumulator, currentValue) => accumulator + (currentValue.price * currentValue.quantity);
+// let subtotal = cart.reduce(reducer, 0);
 // array1.reduce(reducer, 5)
 //------------------------------------------------------------------------------
-let tax = 1.13;
-let grandTotal = subtotal * tax;
+// let tax = 1.13;
+// let grandTotal = subtotal * tax;
+
+
 
 //------------------------------------------------------------------------------
 
@@ -52,6 +54,12 @@ app.get('/menu', (req, res) => {
 
 app.get('/cart', (req, res) => {
   res.json(cart);
+});
+
+app.get('/subtotal', (req, res) => {
+  const reducer = (accumulator, currentValue) => accumulator + (currentValue.price * currentValue.quantity);
+  const subtotal = cart.reduce(reducer, 0);
+  res.json(subtotal);
 });
 
 app.post('/menu', (req, res) => {
