@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {MyContext} from './App';
 
-function MenuItem({name, price, imageLocation, updateCart}) {
+
+function MenuItem({name, price, imageLocation}) {
+  let updateCart = useContext(MyContext).updateCart;
+
   return (
     <div className="menuItem">
       <img src={imageLocation}/>

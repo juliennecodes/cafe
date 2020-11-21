@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './main.css';
 import {CartItem} from './CartItem';
+import {OrderSummary} from './OrderSummary';
+import {MyContext} from './App';
 
-export function Cart({cart, updateCart}) {
+export function Cart() {
+  let cart = useContext(MyContext).cart;
+  let updateCart = useContext(MyContext).updateCart;
+  let subTotal = useContext(MyContext).subTotal;
+
+
   return (
     <div className="cart">
 
@@ -17,7 +24,7 @@ export function Cart({cart, updateCart}) {
                 name ={item.name}
                 price = {item.price}
                 quantity = {item.quantity}
-                updateCart={updateCart}
+                updateCart={updateCart} //should this be removed? since you'll be using MyContext
                 />
               }
 
@@ -25,6 +32,10 @@ export function Cart({cart, updateCart}) {
             }
         )
       }
+      </section>
+
+      <section className="orderSummary">
+        <OrderSummary subTotal={subTotal}/ >
       </section>
     </div>
   );

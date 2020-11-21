@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {menuItems} from './menuItems';
 import MenuItem from './MenuItem';
+import {MyContext} from './App';
 
-export function Menu({updateCart}) {
+export function Menu() {
+  // let cart = useContext(MyContext).cart;
+  let updateCart = useContext(MyContext).updateCart;
+
   return (
     <div className="menu">
 

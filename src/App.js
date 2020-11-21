@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {Navigation} from './Navigation';
 import {menuItems} from './menuItems';
 import {Menu}from './Menu';
 import {Cart} from './Cart';
-import {OrderSummary} from './OrderSummary';
 
 const initialItems = menuItems.map(item => {return {key: item.name, ...item}});
+
+export const MyContext = React.createContext();
 
 function App() {
   const [cart, setCart] = useState(initialItems);
@@ -20,7 +23,10 @@ function App() {
       }
     )
     .then(res => res.json())
-    .then(updatedCart => setCart(updatedCart));
+    .then(updatedCart => {
+      console.log(updatedCart);
+      setCart(updatedCart);
+    });
   }
 
   useEffect(()=>{
@@ -35,9 +41,14 @@ function App() {
 
   return(
     <>
-    <Menu updateCart={updateCart}/>
-    <Cart cart={cart} updateCart={updateCart}/>
-    <OrderSummary subTotal={subTotal}/>
+    <MyContext.Provider value={{cart, subTotal, updateCart}}>
+        <Router>
+          <Navigation />
+          <Route path="/menu" component={Menu}/>
+          <Route path="/cart" component={Cart} />
+        </Router>
+      </MyContext.Provider>
+
     </>
   );
 }
