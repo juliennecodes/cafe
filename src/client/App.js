@@ -1,21 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {Navigation} from './Navigation';
-import {menuItems} from './menuItems';
-import {Menu}from './Menu';
-import {Cart} from './Cart';
-
-const initialItems = menuItems.map(item => {return {key: item.name, ...item}});
+import {Menu}from './menu/Menu';
+import {Cart} from './cart/Cart';
 
 export const MyContext = React.createContext();
 
 function App() {
-  const [cart, setCart] = useState(initialItems);
-  const [subTotal, setSubTotal] = useState(0);
+  const [cart, setCart] = useState({});
+
+  useEffect(() => {
+    fetch('/cart')
+      .then(res => res.json())
+      .then(initialCart => setCart(initialCart))
+  }, []);
 
   const updateCart = (itemName, newQty) => {
     fetch(
-      '/menu',
+      '/cart',
       {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -29,19 +31,9 @@ function App() {
     });
   }
 
-  useEffect(()=>{
-      fetch('/subTotal',
-        {
-          method: 'GET',
-          headers: {'Content-Type': 'application/json'}
-        })
-      .then(res => res.json())
-      .then(updatedSubTotal => setSubTotal(updatedSubTotal));
-    }, [cart]);
-
   return(
     <>
-    <MyContext.Provider value={{cart, subTotal, updateCart}}>
+    <MyContext.Provider value={{cart, updateCart}}>
         <Router>
           <Navigation />
           <Route path="/menu" component={Menu}/>

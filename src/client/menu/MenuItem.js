@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {MyContext} from './App';
+import {MyContext} from '../App';
 
 
 function MenuItem({name, price, imageLocation}) {
