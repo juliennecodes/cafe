@@ -8,8 +8,6 @@ export function OrderSummary(){
   let tax = cart.tax;
   let total = cart.total;
 
-
-
   return(
     <div className="orderSummary">
       <h2>Order Summary</h2>

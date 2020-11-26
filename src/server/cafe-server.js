@@ -50,7 +50,7 @@ function isInCart(cart, itemName){
 }
 
 function updateCartItems(itemName, newQty){
-  console.log(typeof cart.cartItems);
+  console.log(`typeof cart.cartItems is ${typeof cart.cartItems}`);
   let updatedCartItems = cart.cartItems;
   if(isInCart(cart, itemName)){
     return updatedCartItems.map(item => {
@@ -88,18 +88,18 @@ function calculateTotal(subTotal, tax){
 }
 
 app.post('/cart', (req, res) => {
-  console.log(req.body);
+  console.log(`req.body is ${req.body}`);
   let itemName = req.body.itemName;
   let newQty = req.body.newQty;
-  console.log(itemName);
-  console.log(req.body.itemName);
-  console.log(newQty);
-  console.log(req.body.newQty);
+  console.log(`itemName is ${itemName}`);
+  console.log(`req.body.itemName is ${req.body.itemName}`);
+  console.log(`newQty is ${newQty}`);
+  console.log(`req.body.newQty is ${req.body.newQtys}`);
 
   let updatedCartItems = updateCartItems(itemName, newQty);
   console.log(`updatedCartItems is ${updatedCartItems}`);
   let updatedSubtotal = calculateSubTotal(updatedCartItems);
-  console.log(updatedSubtotal);
+  console.log(`updatedSubtotal is ${updatedSubtotal}`);
   let updatedTax = calculateTax(updatedSubtotal);
   let updatedTotal = calculateTotal(updatedSubtotal, updatedTax);
 

@@ -8,7 +8,12 @@ import {Cart} from './pages/cart/Cart';
 export const MyContext = React.createContext();
 
 function App() {
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState({
+    cartItems: [],
+    subTotal: 0,
+    tax: 0,
+    total: 0,
+  });
 
   const updateCart = (itemName, newQty) => {
     fetch('/cart', {
@@ -17,11 +22,11 @@ function App() {
       body: JSON.stringify({itemName, newQty}),
     })
     .then(res => {
-      console.log(res);
+      console.log(`res is ${res}`);
       res.json()
     })
     .then(serverCart =>
-      { console.log(serverCart);
+      { console.log(`serverCart is ${serverCart}`);
         setCart(serverCart)}
     );
   }
@@ -29,7 +34,9 @@ function App() {
   useEffect(()=>{
     fetch('/cart')
     .then(res => res.json())
-    .then(serverCart => setCart(serverCart))
+    .then(serverCart => {
+      console.log(`from useEffect in app when making get request to cart, serverCart is ${serverCart}`);
+      setCart(serverCart)})
   }, []);
 
   return(
