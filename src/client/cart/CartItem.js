@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import './main.css';
+import '../main.css';
 import {Quantity} from './Quantity'
-import {MyContext} from './App';
+import {MyContext} from '../App';
 
 export function CartItem({name, price, imageLocation, quantity}) {
   let updateCart = useContext(MyContext).updateCart;
