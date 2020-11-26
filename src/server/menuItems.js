@@ -14,10 +14,14 @@ const espresso = new MenuItem("Espresso", 3, "images/espresso.png");
 const cake = new MenuItem("Cake", 5, "images/cake.png");
 
 
-export const menuItems = [
+const menuItems = [
 cappucino,
 icedCoffee,
 strongCoffee,
 espresso,
 cake
-]
+];
+
+module.exports = {
+  menuItems
+}
