@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function OrderSummary({subtotal, taxRate, total}){
+export function OrderSummary({subtotal, tax, total}){
   return(
     <div className="orderSummary">
       <h2>Order Summary</h2>
@@ -11,7 +11,7 @@ export function OrderSummary({subtotal, taxRate, total}){
 
       <div className="tax">
         <p>Tax</p>
-        <p className="cost">{(taxRate * subtotal - subtotal).toFixed(2)}</p>
+        <p className="cost">{tax.toFixed(2)}</p>
       </div>
 
       <div className="total">

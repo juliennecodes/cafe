@@ -33,7 +33,7 @@ export function Cart() {
       <section className="orderSummary">
         <OrderSummary
           subtotal={cart.subtotal}
-          taxRate={cart.taxRate}
+          tax={cart.tax}
           total={cart.total}/ >
       </section>
     </div>
