@@ -8,36 +8,29 @@ import {Cart} from './pages/cart/Cart';
 export const MyContext = React.createContext();
 
 function App() {
-  const [cart, setCart] = useState({
-    cartItems: [],
-    subTotal: 0,
-    tax: 0,
-    total: 0,
-  });
+  const [cart, setCart] = useState({});
 
-  const updateCart = (itemName, newQty) => {
-    fetch('/cart', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({itemName, newQty}),
-    })
-    .then(res => {
-      console.log(`res is ${res}`);
-      res.json()
-    })
-    .then(serverCart =>
-      { console.log(`serverCart is ${serverCart}`);
-        setCart(serverCart)}
-    );
-  }
+    useEffect(() => {
+      fetch('/cart')
+        .then(res => res.json())
+        .then(initialCart => setCart(initialCart))
+    }, []);
 
-  useEffect(()=>{
-    fetch('/cart')
-    .then(res => res.json())
-    .then(serverCart => {
-      console.log(`from useEffect in app when making get request to cart, serverCart is ${serverCart}`);
-      setCart(serverCart)})
-  }, []);
+    const updateCart = (itemName, newQty) => {
+      fetch(
+        '/cart',
+        {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({itemName: itemName, newQty: newQty }),
+        }
+      )
+      .then(res => res.json())
+      .then(updatedCart => {
+        console.log(updatedCart);
+        setCart(updatedCart);
+      });
+    }
 
   return(
     <>
