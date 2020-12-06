@@ -61,9 +61,13 @@ function updateItemQuantity(cartItems, itemName, newQty) {
     });
 }
 
+
 function addItemToCart(menuItems, cartItems, itemName, newQty) {
   const [itemToAdd] = menuItems.filter((item) => item.name === itemName);
   return [...cartItems, { ...itemToAdd, quantity: newQty }];
 }
+
+// module.exports = {cartClass: Cart, addItemToCart, updateItemQuantity};
+//how do you export class when you're exporting other things as well?
 
 module.exports = Cart;
