@@ -6,34 +6,47 @@ const { Menu } = require("./Menu");
 //this component is used to fetch menu items
 //this component is used for rendering menu item
 
-//   test('should handle useEffect hook', () => {
-//     const sideEffect = { [1]: false, [2]: false }
+// test('should handle useEffect hook', () => {
+//   const sideEffect = { [1]: false, [2]: false }
+//   //tracks whether useEffect has happened
 //
-//     const { rerender, unmount } = renderHook(
-//       ({ id }) => {
-//         useEffect(() => {
-//           sideEffect[id] = true
-//           return () => {
-//             sideEffect[id] = false
-//           }
-//         }, [id])
-//       },
-//       { initialProps: { id: 1 } }
-//     )
+//   const { rerender, unmount } = renderHook(
+//     ({ id }) => {
+//       useEffect(() => {
+//         sideEffect[id] = true
+//         return () => {
+//           sideEffect[id] = false
+//         }
+//       }, [id])
+//     },
+//     { initialProps: { id: 1 } }
+//   )
+//   //takes some sort of function, that function is given an id, which comes from re-render
+//   //sets up environment in which you can call useEffect
+//   //gives function that rerender which triggers useEffect to happen
 //
-//     expect(sideEffect[1]).toBe(true)
-//     expect(sideEffect[2]).toBe(false)
+//   //give use effect you want to test, give it initial properties
+//   //call useEffect immediately with those properties
+//   //call useEffect with id:1 , causes side effect 1 to be true
 //
-//     rerender({ id: 2 })
+//   expect(sideEffect[1]).toBe(true)
+//   expect(sideEffect[2]).toBe(false)
 //
-//     expect(sideEffect[1]).toBe(false)
-//     expect(sideEffect[2]).toBe(true)
+//   rerender({ id: 2 })
+//   //by calling rerender and giving it id, trigger useEffect again because useEffect depends on id
 //
-//     unmount()
+//   expect(sideEffect[1]).toBe(false)
+//   expect(sideEffect[2]).toBe(true)
 //
-//     expect(sideEffect[1]).toBe(false)
-//     expect(sideEffect[2]).toBe(false)
+//   unmount()
+//   //cleanup function, resets
+//   //cleanup function takes old id and sets it to false
+//   //going to do sideeffect 2 to be true and runs cleanup function against old version of id, which is 1,
 //
+//
+//   expect(sideEffect[1]).toBe(false)
+//   expect(sideEffect[2]).toBe(false)
+
 //
 //
 // it('can fetch menu items from the server', () => {

@@ -29,4 +29,12 @@ app.delete("/cart", (req, res) => {
   res.end();
 });
 
-app.listen(8000);
+const port = process.env.NODE_ENV === 'test' ? 8001 : 8000;
+//when node is running, process - contains useful information in context of running node application
+//one of useful is env - access to environment variables
+app.listen(port);
+
+exports.app = app;
+// module.exports = app;
+//module.exports is an object
+//module.exports way, no longer an object you can add properties to, it is app

@@ -26,3 +26,6 @@ export function Menu() {
     </div>
   );
 }
+
+//interesting behaviour
+//generating menu items

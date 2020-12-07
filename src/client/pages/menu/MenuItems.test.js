@@ -22,3 +22,6 @@ it('can post information to the server', () => {
 });
 
 //test for accurate information? is that needed?
+
+//test in app, where logic lives
+//menuItem has to call updateCart

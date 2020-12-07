@@ -1,8 +1,18 @@
-const { describe, expect, it } = require("@jest/globals");
+const { describe, expect, it, beforeAll, beforeEach } = require("@jest/globals");
 const request = require("supertest");
+//module.exports is supertest, the one only thing exported
 const { app } = require("./cafe-server");
+//adding app property to module.exports, can have more properties exported
 const { menuItems } = require("./menuItems");
 
+beforeAll(async() => {
+    process.env.NODE_ENV = 'test';
+  }
+);
+
+beforeEach(async ()=>{
+  await request(app).delete("/cart");
+});
 //test usage
 //how is cafe server used
 //it is used by sending menuItems
@@ -96,25 +106,37 @@ it('returns a cart when client has sent a post request with information', async 
 //!! QUESTION !!
 //how do you test for subtraction?
 //how do you set up an existing cart and have the response take that into account
-// it('returns a cart with updated values when a client has sent a post request that decreases the item quantity', async ()=> {
-//   //need an existing cart
-//   let testCart = {
-//     cartItems: [{...menuItems[0], quantity: 3}],
-//     subtotal: 15,
-//     tax: 1.95,
-//     total: 16.95,
-//   }
-//
-//   const response = await request(app).post('/cart').send({
-//     itemName: 'Cappucino',
-//     newQty: -1,
-//   })
-//
-//   expect()
-//
-// });
+it('returns a cart with updated values when a client has sent a post request that decreases the item quantity', async ()=> {
+  // await request(app).delete("/cart");
+  //need an existing cart
+  await request(app).post('/cart').send({
+    itemName: 'Cappucino',
+    newQty: 3
+  });
+
+  const response = await request(app).post('/cart').send({
+    itemName: 'Cappucino',
+    newQty: -1,
+  });
+
+  expect(response.body).toEqual({
+    cartItems: [{...menuItems[0], quantity: 2}],
+    subtotal: 10,
+    tax: 1.3,
+    total: 11.3
+  });
+
+});
+//one way - test should be able to access cart and internal application, should see initial state
+//gross way ^ sees app when it shouldn't
+
+//another way - post twice
+//odd ^ - testing decrement but also doing adding and removing
 
 //question
 //why test for subtotal, tax, total?
 //isn't that the purview of cart?
 //shouldn't the test just be whether the server is sending updated information?
+
+//test because it is in response, here is what it's coming back
+//does the entire payload of the cart contain correct information
