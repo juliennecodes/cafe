@@ -1,8 +1,6 @@
 const { describe, expect, it, beforeAll, beforeEach } = require("@jest/globals");
 const request = require("supertest");
-//module.exports is supertest, the one only thing exported
 const { app } = require("./cafe-server");
-//adding app property to module.exports, can have more properties exported
 const { menuItems } = require("./menuItems");
 
 beforeAll(async() => {
@@ -13,130 +11,64 @@ beforeAll(async() => {
 beforeEach(async ()=>{
   await request(app).delete("/cart");
 });
-//test usage
-//how is cafe server used
-//it is used by sending menuItems
-//it is used by sending current cart
-//it is used by sending an updated cart
 
-// it('can send menu items', () => {
-//   //given a request body containing itemName and new quantity
-//   //when server receives request directed to /menu
-//   //server should send back an array
-// });
+//test
+//how you want the component to be used
+//I want cafe server component to be used as a request handler
+//server receives requests and sends things back
+//server receives get request to menu and sends menuItems object
+//server receives get request to cart and sends cart object
+//server receives post request to cart and sends cart object -
+  //^I almost wrote server receives post requests, uses that information to change cart, and sends cart object but maybe I shouldn't get mired in details, that's the test's given concern
+  //subset of post request - things may go haywire if -1 post request to an object that doesn't exist in cart?
 
-
-// FROM WORKING TEST FILE
-it("returns the menu items", async () => {
+it('receives get request and sends back an object', async() => {
+  // const response = await request.get('/menu'); // mistake
   const response = await request(app).get("/menu");
 
-  expect(response.status).toBe(200);
-  expect(response.get("Content-Type")).toMatch("application/json");
-  expect(response.body).toEqual(menuItems);
+  expect(response.body).toEqual([...menuItems]);
 });
 
-it('can send menu items', async () => {
-  //given a request body
-  //when server receives request directed to /menu
-  //server should send back an array
-
-  //!! QUESTION !!
-  // const clientRequest = request(app).get('/menu');
-  // //what does request(app).get('/menu') resolve to?
-  // //why is it response instead of request
-  // //how do you get request itself?
-  // //how do you do when here?
-
-  const response = await request(app).get('/menu');
-
-  expect(response.status).toBe(200);
-  expect(response.get('Content-Type')).toMatch('application/json');
-  expect(response.body).toEqual(menuItems);
-});
-
-it('sends an empty cart when there are no items', async () => {
+it('receives get request to cart and sends cart object', async() => {
   const response = await request(app).get('/cart');
 
-  expect(response.status).toBe(200);
-  expect(response.get('Content-Type')).toMatch('application/json');
   expect(response.body).toEqual({
-      cartItems: [],
-      subtotal: 0,
-      tax: 0,
-      total: 0,
+    cartItems: [],
+    subtotal: 0,
+    tax: 0,
+    total:0
   });
 });
+//supertest, starts server, and communicates with it, and acts like a client?
+//the reason I didn't have to create a testCart in given is that the response given
+//is a real response by the server?
 
-// // // FROM WORKING TEST FILE
-// it("returns the current cart after updating cart items", async () => {
-//     await request(app).delete("/cart");
-//     const response = await request(app).post("/cart").send({
-//       itemName: "Cappucino",
-//       newQty: 1,
-//     });
-//
-//     expect(response.status).toBe(200);
-//     expect(response.get("Content-Type")).toMatch("application/json");
-//     expect(response.body).toEqual({
-//       cartItems: [{ ...menuItems[0], quantity: 1 }],
-//       subtotal: 5,
-//       tax: 0.65,
-//       total: 5.65,
-//     });
-//   });
-
-it('returns a cart when client has sent a post request with information', async () => {
+it('receives post request to cart and sends back a cart object', async() => {
   const response = await request(app).post('/cart').send({
     itemName: 'Cappucino',
-    newQty: 1
-  });
-  //send takes care of stringify?
+    newQty: 1,
+  })
+  const cappucino = menuItems[0];
 
-  expect(response.status).toBe(200);
-  expect(response.get('Content-Type')).toMatch('application/json');
   expect(response.body).toEqual({
-    // cartItems: [{name: 'Cappucino', quantity: 1}], - mistake
-    cartItems: [{...menuItems[0], quantity: 1}],
+    cartItems: [{...cappucino, quantity: 1}],
     subtotal: 5,
     tax: .65,
-    total: 5.65
+    total: 5.65,
   });
 });
 
-//!! QUESTION !!
-//how do you test for subtraction?
-//how do you set up an existing cart and have the response take that into account
-it('returns a cart with updated values when a client has sent a post request that decreases the item quantity', async ()=> {
-  // await request(app).delete("/cart");
-  //need an existing cart
-  await request(app).post('/cart').send({
-    itemName: 'Cappucino',
-    newQty: 3
-  });
-
-  const response = await request(app).post('/cart').send({
-    itemName: 'Cappucino',
-    newQty: -1,
-  });
-
-  expect(response.body).toEqual({
-    cartItems: [{...menuItems[0], quantity: 2}],
-    subtotal: 10,
-    tax: 1.3,
-    total: 11.3
-  });
-
-});
-//one way - test should be able to access cart and internal application, should see initial state
-//gross way ^ sees app when it shouldn't
-
-//another way - post twice
-//odd ^ - testing decrement but also doing adding and removing
-
-//question
-//why test for subtotal, tax, total?
-//isn't that the purview of cart?
-//shouldn't the test just be whether the server is sending updated information?
-
-//test because it is in response, here is what it's coming back
-//does the entire payload of the cart contain correct information
+//fix the issue of deducting from an empty cart
+// it('receives post request to deduct an item that is not in cart and sends back a cart object', async () => {
+//   const response = await request(app).post('/cart').send({
+//     itemName: 'Cappucino',
+//     newQty: -1
+//   });
+//
+//   expect(response.body).toEqual({
+//     cartItems: [],
+//     subtotal: 0,
+//     tax: 0,
+//     total: 0
+//   });
+// });

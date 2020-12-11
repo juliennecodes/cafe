@@ -19,8 +19,6 @@ export function Menu() {
           name={item.name}
           price={item.price}
           imageLocation={item.imageLocation}
-          quantity={item.quantity}
-          updateCart={updateCart}
         />
       ))}
     </div>

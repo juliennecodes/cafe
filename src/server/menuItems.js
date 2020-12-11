@@ -1,6 +1,6 @@
 class MenuItem {
   constructor(name, price, imageLocation) {
-    this.key = name;
+    // this.key = name;
     this.name = name;
     this.price = price;
     this.imageLocation = imageLocation;

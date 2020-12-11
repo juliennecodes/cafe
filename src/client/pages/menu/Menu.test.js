@@ -1,75 +1,99 @@
-const { expect, it} = require("@jest/globals");
-// const { render } = require ('@testing-library/react');
+// const { expect, it } = require("@jest/globals");
+// const { render, screen } = require ('@testing-library/react');
+// const { Menu } = require("./Menu");
+//
+//
+// // test how you want the component to be used
+// //I want the menu component to be used for rendering the menuItems in the menuItems array
+// //the component renders menuItems components from the menuItems in the array
+// //so for the test, it tests whether the number of components match the number of menuItems in the array?
+// //do I test for fetch?
+// //If I'm going by the credo of how I want the component to be used, all I care about is that
+// //the menuItems are being rendered
+// //perhaps if there is an error in rendering that, then take a look at what in the pipeline is not working?
+// //for now, it's fine?
+//
+// //so the test for menu component is testing whether information is present
+// //the user only cares that information is there, it doesn't matter what method that is achieved through
+// //hmmm, then isn't that the purview of menu item
+// //unless, I give it multiple objects
+// //menu component takes in an array and translates those as components
+// //it doesn't matter how menu component does that, just that it does
+//
+// // it('displays information from an array', async () => {
+// //
+// //   //when menuItems is rendered, it asks the server for the array,
+// //   //maybe mock a server response with Promise.resolve
+// //   //dummy server sends back an array
+// //   //menu component uses that information to render menuItems
+// //   //to check that it is displaying information, ask that certain information is
+// //   //present in the screen
+// //
+// //   //oh maybe not Promise.resolve?
+// //   //just check that it's rendering?
+// //   //maybe create a different test
+// // });
+//
+// it('renders a Menu component', async ()=> {
+//   render(<Menu />);
+//
+//   expect(screen.queryByText(/Menu/)).toBeNull();
+//   screen.debug();
+//   expect(await screen.findByText(/Menu/)).toBeInTheDocument();
+//   screen.debug();
+//
+// });
+//
+
+const { expect, it } = require("@jest/globals");
+const { render, screen } = require ('@testing-library/react');
 const { Menu } = require("./Menu");
+const {rest} = require('msw');
+const { setupServer} = require('msw/node');
 
-//test usage
-//this component is used to fetch menu items
-//this component is used for rendering menu item
+const server = setupServer(
+  rest.get("/menu", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        0: {
+          name: "Dummy Name",
+          price: 10,
+          imageLocation: "/path.png"
+        },
+        1: {
+          name: "Dummy Name",
+          price: 10,
+          imageLocation: "/path.png"
+        },
+      })
+    )
+  }),
 
-// test('should handle useEffect hook', () => {
-//   const sideEffect = { [1]: false, [2]: false }
-//   //tracks whether useEffect has happened
-//
-//   const { rerender, unmount } = renderHook(
-//     ({ id }) => {
-//       useEffect(() => {
-//         sideEffect[id] = true
-//         return () => {
-//           sideEffect[id] = false
-//         }
-//       }, [id])
-//     },
-//     { initialProps: { id: 1 } }
-//   )
-//   //takes some sort of function, that function is given an id, which comes from re-render
-//   //sets up environment in which you can call useEffect
-//   //gives function that rerender which triggers useEffect to happen
-//
-//   //give use effect you want to test, give it initial properties
-//   //call useEffect immediately with those properties
-//   //call useEffect with id:1 , causes side effect 1 to be true
-//
-//   expect(sideEffect[1]).toBe(true)
-//   expect(sideEffect[2]).toBe(false)
-//
-//   rerender({ id: 2 })
-//   //by calling rerender and giving it id, trigger useEffect again because useEffect depends on id
-//
-//   expect(sideEffect[1]).toBe(false)
-//   expect(sideEffect[2]).toBe(true)
-//
-//   unmount()
-//   //cleanup function, resets
-//   //cleanup function takes old id and sets it to false
-//   //going to do sideeffect 2 to be true and runs cleanup function against old version of id, which is 1,
-//
-//
-//   expect(sideEffect[1]).toBe(false)
-//   expect(sideEffect[2]).toBe(false)
+  rest.get("/cart", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json(
+        {
+          cartItems: [],
+          subtotal: 0,
+          tax:0,
+          total: 0
+        }
+      )
+    )
+  })
 
-//
-//
-// it('can fetch menu items from the server', () => {
-//   //given the menu component,
-//   //when it makes a fetch request to the server
-//   //then it will receive an array
-//
-//   render(Menu);
-//
-// })
+);
 
-it('can receive menu items when component requests it from the server', () => {
-  //given render menu component
-  //when fetch in useEffect happens
-  //then menuItems should be defined
-  //then menuItems should be an array? how much involvement with the server should be included?
-  //are you responsible for knowing that the server will send back an array with so and so specific items?
+beforeAll(() =>  server.listen());
+afterAll(() => server.close());
+afterEach(()=> server.resetHandlers());
+
+it('renders', async ()=> {
+  render(<Menu />);
+    expect(screen.queryByText(/Menu/)).toBeNull();
+    screen.debug();
+    expect(await screen.findByText(/Menu/)).toBeInTheDocument();
+    screen.debug();
 });
-
-it('renders the right amount of components, as dictated by the menu items', () => {
-  //given render menu component
-  //query for the div? data testid?
-  //then div children should be length of menuitems
-});
-//is this test necessary? why wouldn't it render the right amount if it is mapping through each one?
-//isn't it a given that the menu item component will correspond to the menu items?
