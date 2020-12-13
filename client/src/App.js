@@ -4,8 +4,6 @@ import {Navigation} from './Navigation';
 import {Menu}from './menu/Menu';
 import {Cart} from './cart/Cart';
 
-export const MyContext = React.createContext();
-
 function App() {
   const [cart, setCart] = useState({});
 
@@ -33,13 +31,24 @@ function App() {
 
   return(
     <>
-    <MyContext.Provider value={{cart, updateCart}}>
-        <Router>
-          <Navigation />
-          <Route path="/menu" component={Menu}/>
-          <Route path="/cart" component={Cart} />
-        </Router>
-      </MyContext.Provider>
+      <Router>
+        <Navigation />
+        <Route path="/menu" render={(props) =>
+          <Menu
+            {...props}
+            menuItemsPromise={fetch('/menu').then(res => res.json())}
+            updateCart={updateCart}/>
+          }
+        />
+        <Route path="/cart" render={(props) =>
+          <Cart
+            {...props}
+            cart={cart}
+            updateCart={updateCart}
+            />
+          }
+        />
+      </Router>
     </>
   );
 }

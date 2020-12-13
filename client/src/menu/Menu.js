@@ -1,15 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { MyContext } from "../App";
+import React, { useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 
-export function Menu() {
-  const updateCart = useContext(MyContext).updateCart;
-  
+export function Menu({menuItemsPromise, updateCart}) { 
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
-    fetch('/menu')
-    .then(res => res.json())
-    .then(menuItems => setMenuItems(menuItems))
+    menuItemsPromise
+      .then(menuItems => setMenuItems(menuItems))
   }, []);
 
   return (
