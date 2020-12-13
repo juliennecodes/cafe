@@ -15,21 +15,51 @@ export function MenuItem({name, price, imageLocation}) {
   );
 }
 
-//for this test, test that button is wired up to updateCart correctly, test that clicking the button does updateCart
-//from dodds - test should typically only see/interact with the props that are passed, and the rendered output.
+//I want this component to be used for updating the quantity of items in the cart
+//for testing, make sure that clicking the button updates the state cart
+//how to test
+//provide dummy state using msw
+//path to /cart gets intercepted and dummy server returns dummycart
+//so when you click the button, you receive dummy cart
+//maybe capture that initial dummy cart value and expect the quantity of an item to increase by 1?
 
-//I think what I need to do is to provide dummy info in order to test that the component is working
-//by doing it that way, I ensure that I'm not too mired in the details
-//for example, instead of checking how manu menuItems are rendered, I check instead that
-//certain texts are available in the document
-//doing it this way proves that menuItems are rendered
-//maybe just provide the array with dummy info
-//it ensures that the gears are working together if certain information are present in the screen
-//it may not be as overt as this length of items in the array correspond to this many components in the screen
-//but it does not care how the information is presented in the screen,
-//it only cares that the information is in the screen
-//it doesn't care about implementation, it only cares that the results are there
-//it doesn't care that the components are created through mapping
-//I think this is important because in the future, there may be better way
-//of implementing things and if mapping was no longer used and I was testing for mapping, then
-//the test would break even if the component is still working, with maybe even better code
+// test('button updates cart', async() => {
+//   //given dummy server, is in another file so it can be used by other tests,
+//   //^implicit given
+//   //given initialCart value of 'Cappucino' in cart items having quantity of 2
+//   //given name = 'Cappucino'
+//
+//
+//   //render MenuItem
+//   //query for the button, using getByRole?
+//   //click that button
+//
+//   //expect serverResponse to be, spread initialCart, with cartItems being spread cartItems,
+//   //with Cappucino, being spread Cappucino with quantity = 3
+// });
+
+it('button updates cart item quantity', async()=>{
+  //g
+  let initialCart = getRequestInitialCart();
+  const itemName = "Cappucino";
+  const price = 5;
+  const imageLocation = "cappucino.png";
+
+  const {getByRole} = render(<MenuItem key={itemName} name={itemName} price={price} imageLocation={imageLocation} />);
+  const button = getByRole('button', {name: /add to cart/});
+
+  //w
+  fireEvent.click(button);
+
+  //t
+  expect(fireEvent.click(button)).toEqual({
+    ...initialCart, cartItems: [...cartItems, cartItems[0]: {...cartItems[0], quantity: 3}]
+  });
+
+});
+
+function getRequestInitialCart(){
+  fetch("/cartWithItems")
+  .then(res=> res.json())
+  .then(cart => cart);
+}

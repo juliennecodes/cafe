@@ -13,3 +13,8 @@ export function Navigation() {
     </div>
   );
 }
+
+//do I test this?
+//test that links go to the specified path
+//but then you're just testing that the pages render properly
+//hmmm

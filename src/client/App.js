@@ -47,3 +47,13 @@ function App() {
 }
 
 export default App;
+
+//test that the app routes the pages?
+//how do you access browser url?
+test('app routes', async()=> {
+  //given / path,
+  //expect Pleasant time to be in the document
+
+  //given /menu path,
+  //expect h1 text content to be menu, so as not to confuse with text content in nav?
+})

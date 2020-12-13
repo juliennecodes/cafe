@@ -8,8 +8,6 @@ export function Cart() {
   let cart = useContext(MyContext).cart;
 
    return (
-
-
        cart.cartItems ?
        <div className="cart">
 
@@ -48,12 +46,38 @@ export function Cart() {
    );
 }
 
-//notes
-//So the error of cannot map undefined is because in the first render, cart is undefined
-//useEffect takes effect after rendering and it just so happens that defining the cart is done through useEffect
-//set up a conditional rendering, if cart evaluates to true, which means it is defined, render away
-//if it isn't, then render a loading icon
-//however, I tried cart but it was still creating an error
-//cart exists but it takes a bit more time for the properties to populate it?
-//so at the time, cart evaluates to true but the property cartItems is still undefined
-//using cart.cartItems is the more stringent check on what should be rendered
+// //test that this component renders cart items
+// test('renders cart items', async()=> {
+//   //use the dummy server
+//   //dummy server provides dummy cart with several cart items
+//   //expect for the dummy information to be in the document
+// });
+//
+// test('renders order summary', async()=> {
+//   //given the dummy cart in the dummy server
+//   //let cart = get request to dummy server /cart - dummy server has a readymade cart with cart items, not an empty array
+//   //expect dummy information to be in the document
+// });
+// //do I test this here? all this component is doing is passing properties? well it also renders the component,
+// //maybe just check that certain information is in the document
+
+it('renders cart items', async()=> {
+  //given cart
+  //fetch cart - how to use this instead of react create context?
+
+  render(<Cart />);
+  //renders cart component, renders cartItems from cart state and its property cartItems
+
+  expect(await screen.getBytext(/Cappucino/)).toBeInTheDocument();
+  //^ cart item in cart with items
+});
+
+it('renders order summary', async()=>{
+  //given cart object
+
+  // render(<OrderSummary />) with cart properties or should this test be in order summary?
+  //actually the test might just be props being passed down
+  //so render it with dummy information?
+
+  //expect(await screen.getByText(/dummy information/)).toBeInTheDocument();
+});

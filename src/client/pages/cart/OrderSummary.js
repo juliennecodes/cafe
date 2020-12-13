@@ -21,3 +21,9 @@ export function OrderSummary({subtotal, tax, total}){
     </div>
   );
 }
+
+test('renders information', async()=>{
+  //given dummy server, with dummy information,
+
+  //expect dummy information to be in the document
+})
