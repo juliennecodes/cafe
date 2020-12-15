@@ -1,12 +1,8 @@
-import React, {useContext} from 'react';
 import '../main.css';
 import {CartItem} from './CartItem';
 import {OrderSummary} from './OrderSummary';
-import {MyContext} from '../App';
 
-export function Cart() {
-  let cart = useContext(MyContext).cart;
-
+export function Cart({cart, updateCart}) {
   return (
     <div className="cart">
 
@@ -21,6 +17,7 @@ export function Cart() {
                 name ={item.name}
                 price = {item.price}
                 quantity = {item.quantity}
+                updateCart = {updateCart}
                 />
               }
 

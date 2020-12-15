@@ -20,4 +20,5 @@ const cake = new MenuItem("Cake", 5, "images/cake.png");
 
 const menuItems = [cappucino, icedCoffee, strongCoffee, espresso, cake];
 
-module.exports = menuItems;
+exports.MenuItem = MenuItem;
+exports.menuItems = menuItems;
